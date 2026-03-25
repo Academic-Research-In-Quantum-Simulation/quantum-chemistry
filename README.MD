@@ -1,0 +1,1 @@
+Este projeto reúne temas da pesquisa de mestrado em física de materiais, com o objetivo de conseguir descrever a matéria usando métodos computacionais do estado da arte, como computação quântica e machine learning.
