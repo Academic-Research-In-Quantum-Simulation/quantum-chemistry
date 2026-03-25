@@ -1,0 +1,47 @@
+# Quantum Computing
+
+This repository provides a comprehensive tutorial designed to initiate simulations of material interactions at the atomic level using quantum computers.
+
+## Sumário
+
+1. [Quantum Computing Theory](/01.Quantum_Computing_Theory)
+    - [1.1 Single Qubit System](/01.Quantum_Computing_Theory/01.Single_Qubit_System)
+    - [1.2 Two or more independent Qubit System](/01.Quantum_Computing_Theory/02.Two_or_more_independent_Qubit_System)
+    - [1.3 Two or more correlated Qubit System](/01.Quantum_Computing_Theory/03.Two_or_more_correlated_Qubit_System)
+    - [1.4 Logic Operators](/01.Quantum_Computing_Theory/04.Logic_Operators)
+    - [1.5 Expected Value](/01.Quantum_Computing_Theory/05.System's_Expected_Value)
+
+2. [NISC Hardware](/02.NISC_Hardware)
+    - [2.1 Quantum Hardwares](/02.NISC_Hardware/01.Quantum_Hardware)
+        - [2.1.1 Superconductor QPU](/02.NISC_Hardware/02.Quantum_Noise)
+        - [2.1.2 Photonic QPU](02.%20NISC%20Hardware/01.%20Quantum%20Hardwares/Photonic%20QPU.ipynb)
+        - [2.1.3 Neutral-Atom Based QPU](/01.%20Quantum%20Hardwares/Neutral-Atom%20Based%20QPU.ipynb)
+        - [2.1.4 Ion-Trapped QPU](02.%20NISC%20Hardware/01.%20Quantum%20Hardwares/Ion-Trap%20QPU.ipynb)
+    - [2.2 Quantum Noise](02.NISC_Hardware/02.Quantum_Noise)
+        - [2.2.1 Depolarization Error](/02.NISC_Hardware/02.Quantum_Noise/Depolarization_Error.ipynb)
+        - [2.2.2 Initialization Error](/02.NISC_Hardware/02.Quantum_Noise/Initialization_Error.ipynb)
+        - [2.2.3 Phase Damping Error](/02.NISC_Hardware/02.Quantum_Noise/Phase_Damping_Error.ipynb)
+        - [2.2.4 Readout Error](/02.NISC_Hardware/02.Quantum_Noise/Readout_Error.ipynb)
+        - [2.2.4 Thermal Relaxation Error](/02.NISC_Hardware/02.Quantum_Noise/Thermal_Relaxation_Error.ipynb)
+    - [2.3 Quantum Noise Mitigation](/02.NISC_Hardware/03.Quantum_Noise_Mitigation_Technique)
+        - [2.3.1 Clifford Regression](/02.NISC_Hardware/03.Quantum_Noise_Mitigation_Technique/Clifford_Regression)
+        - [2.3.2 Richardson Extrapolation](/02.NISC_Hardware/03.Quantum_Noise_Mitigation_Technique/Richardson_Extrapolation)
+
+3. [Ab-initio Calculation](/03.Ab-Initio_Calculation)
+    - [3.1 Building System's Hamiltonian](/03.Ab-Initio_Calculation/01.Building_Systems_Hamiltonian)
+        - [3.1.1 Bohr-Oppenheimer Approximation](/03.Ab-Initio_Calculation/01.Building_Systems_Hamiltonian/01.Bohr-Oppenheimer_approximation.ipynb)
+        - [3.1.2 Fock Space](/03.Ab-Initio_Calculation/01.Building_Systems_Hamiltonian/02.Fock_space.ipynb)
+        - [3.1.3 Fermionic Creation and Annihilation Operators](/03.Ab-Initio_Calculation/01.Building_Systems_Hamiltonian/03.Fermionic_creation_and_annihilation_operators.ipynb)
+        - [3.1.4 Slater Type Orbitals](/03.Ab-Initio_Calculation/01.Building_Systems_Hamiltonian/04.Slater-type_orbitals.ipynb)
+    - [3.2 Mapping Hamiltonian to Quantum Circuit](/03.Ab-Initio_Calculation/02.Mapping_Hamiltonian_to_Quantum_Circuit)
+        - [3.2.1 Jordan-Wigner Transformation](/03.Ab-Initio_Calculation/02.Mapping_Hamiltonian_to_Quantum_Circuit/Jordan–Wigner_transformation.ipynb)
+        - [3.2.2 Parity Transformation](/03.Ab-Initio_Calculation/02.Mapping_Hamiltonian_to_Quantum_Circuit/Parity_transformation.ipynb)
+        - [3.2.3 Bravyi-Kitaev Transformation](/03.Ab-Initio_Calculation/02.Mapping_Hamiltonian_to_Quantum_Circuit/Bravyi-Kitaev_transformation.ipynb)
+        - [3.2.4 Bravyi-Kitaev Superfast Transformation](/03.Ab-Initio_Calculation/02.Mapping_Hamiltonian_to_Quantum_Circuit/Bravyi-Kitaev_superfast_transformation.ipynb)
+    - [3.3 Optimizing System Energy](/03.Ab-Initio_Calculation/03.Optimizing_System_Energy)
+        - [3.3.1 Optimization Algorithm](/03.Ab-Initio_Calculation/03.Optimizing_System_Energy/01.Optimization_Algorithms)
+            - [3.3.1.1 Gradient-Free Optimizers](/03.Ab-Initio_Calculation/03.Optimizing_System_Energy/01.Optimization_Algorithms/Gradient-Free_Optimizers)
+            - [3.3.1.2 Gradient-Descent Optimizers](/03.Ab-Initio_Calculation/03.Optimizing_System_Energy/01.Optimization_Algorithms/Gradient-Descent_Optimizers)
+        - [3.3.2 VQE](/03.Ab-Initio_Calculation/03.Optimizing_System_Energy/02.Variational_Quantum_Eigensolver_(VQE))
+    - [3.4 Mitigating Noise](/03.Ab-Initio_Calculation/04.Mitigating_Noise)
+    - [3.5 Comparing Results](/03.Ab-Initio_Calculation/05.Comparing_Results)
