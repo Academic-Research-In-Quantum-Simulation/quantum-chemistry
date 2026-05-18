@@ -255,6 +255,79 @@
 
   })();
 
+  function setupNotebookTools() {
+    const layout = document.getElementById('studiesLayout');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnCollapse = document.getElementById('btnCollapseCells');
+    const btnExpand = document.getElementById('btnExpandCells');
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const tools = document.querySelector('.notebook-tools');
+
+    if (!layout || !tools || !btnToggleSidebar || !btnFullscreen || !btnCollapse || !btnExpand || !viewer) return;
+
+    function refreshProofTools() {
+      try {
+        const doc = viewer.contentDocument || viewer.contentWindow?.document;
+        const hasProofBlocks = !!doc?.querySelector('details.math-block');
+
+        tools.classList.toggle('has-proofs', hasProofBlocks);
+      } catch (_) {
+        tools.classList.remove('has-proofs');
+      }
+    }
+
+    viewer.addEventListener('load', refreshProofTools);
+    refreshProofTools();
+
+    btnToggleSidebar.addEventListener('click', () => {
+      layout.classList.toggle('sidebar-collapsed');
+
+      btnToggleSidebar.innerHTML =
+        layout.classList.contains('sidebar-collapsed')
+          ? '⇄'
+          : '⇆';
+    });
+
+    btnFullscreen.addEventListener('click', async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+          btnFullscreen.innerHTML = '⤢';
+        } else {
+          await document.exitFullscreen();
+          btnFullscreen.innerHTML = '⛶';
+        }
+      } catch (err) {
+        console.error('fullscreen error', err);
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      btnFullscreen.innerHTML = document.fullscreenElement ? '⤢' : '⛶';
+    });
+
+    btnCollapse.addEventListener('click', () => {
+      const doc = viewer.contentDocument || viewer.contentWindow?.document;
+      if (!doc) return;
+
+      doc.querySelectorAll('details.math-block').forEach(d => {
+        d.open = false;
+      });
+    });
+
+    btnExpand.addEventListener('click', () => {
+      const doc = viewer.contentDocument || viewer.contentWindow?.document;
+      if (!doc) return;
+
+      doc.querySelectorAll('details.math-block').forEach(d => {
+        d.open = true;
+      });
+    });
+
+  }
+
+  setupNotebookTools();
+
 })();
 
 (() => {

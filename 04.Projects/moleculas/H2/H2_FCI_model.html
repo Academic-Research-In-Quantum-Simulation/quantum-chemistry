@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Photonic QPU</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
+<title>H2_FCI_model</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script type="module">
   import mermaid from 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs';
   
   mermaid.initialize({ startOnLoad: true });
@@ -13497,7 +13497,131 @@ div#notebook {
 <main>
 <div class="border-box-sizing" id="notebook" tabindex="-1">
 <div class="container" id="notebook-container">
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=780d52b7-810c-4c42-a458-8f2b8aac5e4d">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=f7201cb9"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Modelagem-da-Mol%C3%A9cula-de-H%E2%82%82-via-FCI-(Full-Configuration-Interaction)">Modelagem da Molécula de H₂ via FCI (Full Configuration Interaction)<a class="anchor-link" href="#Modelagem-da-Mol%C3%A9cula-de-H%E2%82%82-via-FCI-(Full-Configuration-Interaction)">¶</a></h1><p>Este notebook tem como objetivo construir <strong>a curva de energia potencial da molécula de H₂</strong> usando o método de FCI, implementado diretamente com <code>numpy</code>.</p>
+<hr/>
+<h2 id="%F0%9F%94%B9-1.-Introdu%C3%A7%C3%A3o">🔹 1. Introdução<a class="anchor-link" href="#%F0%9F%94%B9-1.-Introdu%C3%A7%C3%A3o">¶</a></h2><p>A energia da molécula de hidrogênio (H₂) pode ser calculada resolvendo-se a equação de Schrödinger eletrônica. O método FCI consiste em construir todas as configurações possíveis de elétrons (determinantes de Slater) em uma base de orbitais, e diagonalizar o Hamiltoniano eletrônico nesse espaço.</p>
+<hr/>
+<h2 id="%F0%9F%94%B9-2.-Par%C3%A2metros-da-Mol%C3%A9cula">🔹 2. Parâmetros da Molécula<a class="anchor-link" href="#%F0%9F%94%B9-2.-Par%C3%A2metros-da-Mol%C3%A9cula">¶</a></h2><p>Usaremos uma base mínima (STO-3G), e construiremos a curva de energia potencial variando a distância internuclear.</p>
+<ul>
+<li>Número de elétrons: 2</li>
+<li>Número de orbitais espaciais: 2 (1s_A e 1s_B)</li>
+<li>Spin-orbitais: 4 (cada orbital espacial com dois spins)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=5663590b">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=0b7f37f2"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="%F0%9F%94%B9-4.-Integrais-de-Um-e-Dois-El%C3%A9trons-para-H%E2%82%82-(Base-STO-3G)">🔹 4. Integrais de Um e Dois Elétrons para H₂ (Base STO-3G)<a class="anchor-link" href="#%F0%9F%94%B9-4.-Integrais-de-Um-e-Dois-El%C3%A9trons-para-H%E2%82%82-(Base-STO-3G)">¶</a></h2><h3 id="%F0%9F%94%B8-%C3%8Dndice-dos-Orbitais">🔸 Índice dos Orbitais<a class="anchor-link" href="#%F0%9F%94%B8-%C3%8Dndice-dos-Orbitais">¶</a></h3><p>Utilizaremos 4 spin-orbitais indexados da seguinte forma:</p>
+<table>
+<thead>
+<tr>
+<th>Índice</th>
+<th>Orbital Espacial</th>
+<th>Spin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>$ \psi_0 $</td>
+<td>$ \uparrow $</td>
+</tr>
+<tr>
+<td>1</td>
+<td>$ \psi_0 $</td>
+<td>$ \downarrow $</td>
+</tr>
+<tr>
+<td>2</td>
+<td>$ \psi_1 $</td>
+<td>$ \uparrow $</td>
+</tr>
+<tr>
+<td>3</td>
+<td>$ \psi_1 $</td>
+<td>$ \downarrow $</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="%F0%9F%94%B8-Integrais-de-Um-El%C3%A9tron-$-h_%7Bpq%7D-$">🔸 Integrais de Um Elétron $ h_{pq} $<a class="anchor-link" href="#%F0%9F%94%B8-Integrais-de-Um-El%C3%A9tron-$-h_%7Bpq%7D-$">¶</a></h3><p>Estas integram a energia cinética e a atração nuclear de cada elétron:</p>
+<p>$$
+h_{pq} =
+\begin{bmatrix}
+-1.256 &amp; -0.4759 &amp; -0.4759 &amp; -0.4438 \\
+-0.4759 &amp; -1.256 &amp; -0.4438 &amp; -0.4759 \\
+-0.4759 &amp; -0.4438 &amp; -1.256 &amp; -0.4759 \\
+-0.4438 &amp; -0.4759 &amp; -0.4759 &amp; -1.256
+\end{bmatrix}
+$$</p>
+<hr/>
+<h3 id="%F0%9F%94%B8-Integrais-de-Dois-El%C3%A9trons-$-g_%7Bpqrs%7D-$">🔸 Integrais de Dois Elétrons $ g_{pqrs} $<a class="anchor-link" href="#%F0%9F%94%B8-Integrais-de-Dois-El%C3%A9trons-$-g_%7Bpqrs%7D-$">¶</a></h3><p>Estas representam a repulsão entre pares de elétrons:</p>
+<ul>
+<li>$ g_{0101} = 0.6745 $</li>
+<li>$ g_{0110} = 0.6646 $</li>
+<li>$ g_{2323} = 0.6745 $</li>
+<li>$ g_{2332} = 0.6646 $</li>
+<li>$ g_{0123} = g_{1032} = 0.1813 $ (e simétricos)</li>
+</ul>
+<p>Usaremos apenas os termos mais relevantes para nossa implementação inicial, considerando que:</p>
+<p>$$
+g_{pqrs} = g_{qpsr} = g_{rspq} = g_{srpq}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=dbc93d4a"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=425f12ac">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Integrais de 1 elétron h_pq</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.256</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4438</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.256</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4438</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4438</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.256</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.4438</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4759</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.256</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Integrais de 2 elétrons g_pqrs: g[p,q,r,s] = ⟨pq|1/r12|rs⟩</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Preenchendo os termos relevantes</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6745</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6646</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6745</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6646</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1813</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=3d043c12">
 <div class="input">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">

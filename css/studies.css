@@ -4,20 +4,30 @@
 
 /* container principal da página Studies */
 .main-wide {
-  width: 90%;
-  margin: 32px auto;
-  padding: 0 0 16px 0;
+  width: auto;
+  margin-top: 32px;
+  margin-bottom: 0;
+  margin-left: 4.5vw;
+  margin-right: 2vw;
+  padding: 0;
+  height: calc(100vh - 64px - 32px);
+  overflow: hidden;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* ocupa a altura útil (desconta header) */
 .layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px 1fr 26px;
   gap: 16px;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
-  height: calc(100vh - 64px);
-  /* evita “scroll duplo” do grid */
   overflow: hidden;
 }
 
@@ -132,8 +142,13 @@
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .notebook-tools {
+    order: 3;
+    flex-direction: row;
     height: auto;
-    overflow: visible;
+    padding: 8px;
   }
 
   .sidebar {
@@ -187,8 +202,107 @@ a.file-notebook {
 
 /* notebook selecionado */
 a.file-notebook.is-active {
-  background: #b41b95;
+  background: #876cb1;
   font-weight: 600;
   border-radius: 4px;
   /* box-shadow: inset 3px 0 0 #60a5fa; */
+}
+
+/* ============================= */
+/* NOTEBOOK TOOLS                */
+/* ============================= */
+
+.notebook-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-top: 10px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(11, 18, 32, 0.65);
+}
+
+.notebook-tools button {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: transparent;
+  color: rgba(203, 213, 225, 0.75);
+
+  font-size: 13px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.notebook-tools button:hover {
+  background: rgba(148, 163, 184, 0.15);
+  color: #ffffff;
+}
+
+.layout.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  width: 100vw;
+  height: 100vh;
+
+  margin: 0;
+  padding: 12px;
+
+  background: #0b1220;
+
+  grid-template-columns: 0 1fr 26px;
+}
+
+.layout.is-fullscreen .sidebar {
+  display: none;
+}
+
+.layout.is-fullscreen .viewer {
+  height: calc(100vh - 24px);
+}
+
+/* ============================= */
+/* COLLAPSED SIDEBAR             */
+/* ============================= */
+
+.layout.sidebar-collapsed {
+  grid-template-columns: 1fr 26px;
+}
+
+.layout.sidebar-collapsed .sidebar {
+  display: none;
+}
+
+.layout.sidebar-collapsed .viewer {
+  grid-column: 1;
+}
+
+.layout.sidebar-collapsed .notebook-tools {
+  grid-column: 2;
+}
+
+.notebook-tools .proof-only {
+  display: none;
+}
+
+.notebook-tools.has-proofs .proof-only {
+  display: flex;
 }
